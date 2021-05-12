@@ -2,6 +2,7 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector3;
@@ -15,6 +16,10 @@ public class MyAnimation extends Animation<TextureRegion> {
 	public int y;
 	public int width;
 	public int height;
+	public static int screenWidth = 800;
+	public static int screenHeight = 480;
+	public static int play = 0;
+	public static int trainAi = 1;
 
 	MyAnimation(float frameDuration, TextureRegion[] frames, int type, boolean loop) {
 		super(frameDuration, frames);
@@ -31,17 +36,6 @@ public class MyAnimation extends Animation<TextureRegion> {
 		this.height = height;
 	}
 
-	public void clicked(float inputX, float inputY, OrthographicCamera camera) {
-		Vector3 vec=new Vector3(inputX, inputY,0);
-		camera.unproject(vec);
-		inputX = vec.x;
-		inputY = vec.y;
-		if (x <= inputX && inputX <= x + width && y <= inputY && inputY <= y + height) {
-			activated = true;
-			stateTime = 0;
-		}
-	}
-
 	public TextureRegion getKeyFrame() {
 		return getKeyFrame(stateTime);
 	}
@@ -50,13 +44,39 @@ public class MyAnimation extends Animation<TextureRegion> {
 		return isAnimationFinished(stateTime);
 	}
 
-	public void doneAnimation(MyGdxGame game, MainMenuScreen screen) {
+	public void doneAnimation(MyGdxGame game, MainMenuScreen screen, String name) {
 		// case work
-		if (type == 0) { // play Button
+		if (name == "play") { // play Button
 			game.setScreen(new GameScreen(game));
             screen.dispose();
-		} else if (type == 1) { // trainAi Button
+		} else if (name == "train") { // trainAi Button
 
 		}
+	}
+
+	public static MyAnimation initializeAnimation(int type, int FRAME_COLS, int FRAME_ROWS) {
+		Texture sheet = null;
+		if (type == play) {
+			sheet = new Texture(Gdx.files.internal("play_sheet.png"));
+		} else if (type == trainAi) {
+			sheet = new Texture(Gdx.files.internal("train_sheet.png"));
+		}
+		TextureRegion[][] tmp = TextureRegion.split(sheet,
+				sheet.getWidth() / FRAME_COLS,
+				sheet.getHeight() / FRAME_ROWS);
+		TextureRegion[] frames = new TextureRegion[FRAME_ROWS * FRAME_COLS];
+		for (int i = 0; i < FRAME_COLS; i++) {
+			frames[i] = tmp[0][i];
+		}
+
+		MyAnimation animation = null;
+		if (type == play) {
+			animation = new MyAnimation(0.025f, frames, 0, false);
+			animation.setPosition(screenWidth / 2 - 150 / 2, 230, 150, 60);
+		} else if (type == trainAi) {
+			animation = new MyAnimation(0.025f, frames, 1, false);
+			animation.setPosition(screenWidth / 2 - 150 / 2, 140, 150, 60);
+		}
+		return animation;
 	}
 }
