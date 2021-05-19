@@ -26,8 +26,7 @@ public class MainMenuScreen implements Screen {
 
     // Animation
     MyAnimation[] animations;
-    int play = 0;
-    int trainAi = 1;
+    int play = 0, trainAi = 1;
 
     public MainMenuScreen(final MyGdxGame game) {
         this.game = game;

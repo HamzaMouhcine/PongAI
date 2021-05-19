@@ -1,5 +1,6 @@
 package com.mygdx.game;
 
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -9,9 +10,9 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 public class MyActor extends Actor {
 	MyAnimation animation;
 	MyGdxGame game;
-	MainMenuScreen screen;
+	Screen screen;
 
-	public MyActor(MyAnimation a, String name, MyGdxGame game, MainMenuScreen screen) {
+	public MyActor(MyAnimation a, String name, MyGdxGame game, Screen screen) {
 		this.animation = a;
 		this.game = game;
 		this.screen = screen;
