@@ -2,6 +2,7 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -23,6 +24,7 @@ public class MyAnimation extends Animation<TextureRegion> {
 	public static int trainAi = 1;
 	public static int select = 2;
 	public static int back = 3;
+	public static int start = 4;
 
 	MyAnimation(float frameDuration, TextureRegion[] frames, int type, boolean loop) {
 		super(frameDuration, frames);
@@ -52,14 +54,34 @@ public class MyAnimation extends Animation<TextureRegion> {
 			game.setScreen(new SelectGenomeScreen(game));
 			screen.dispose();
 		} else if (name == "train") { // trainAi Button
-			//game.setScreen(new GameScreen(game));
-			//screen.dispose();
+			game.setScreen(new TrainAiScreen(game));
+			screen.dispose();
 		} else if (name == "select") {
 
 		} else if (name == "back") {
 			game.setScreen(new MainMenuScreen(game));
 			screen.dispose();
+		} else if (name == "start") {
+
 		}
+	}
+
+	public static MyAnimation initializeAnimation(int type, int FRAME_COLS, int FRAME_ROWS, FileHandle file, int x, int y, int width, int height) {
+		Texture sheet = new Texture(file);
+
+		TextureRegion[][] tmp = TextureRegion.split(sheet,
+				sheet.getWidth() / FRAME_COLS,
+				sheet.getHeight() / FRAME_ROWS);
+		TextureRegion[] frames = new TextureRegion[FRAME_ROWS * FRAME_COLS];
+		for (int i = 0; i < FRAME_COLS; i++) {
+			frames[i] = tmp[0][i];
+		}
+
+		MyAnimation animation = null;
+		animation = new MyAnimation(0.025f, frames, 0, false);
+		animation.setPosition(x, y, width, height);
+
+		return animation;
 	}
 
 	public static MyAnimation initializeAnimation(int type, int FRAME_COLS, int FRAME_ROWS) {
@@ -72,6 +94,8 @@ public class MyAnimation extends Animation<TextureRegion> {
 			sheet = new Texture(Gdx.files.internal("select_sheet.png"));
 		} else if (type == back) {
 			sheet = new Texture(Gdx.files.internal("back_sheet.png"));
+		} else if (type == start) {
+			sheet = new Texture(Gdx.files.internal("start_sheet.png"));
 		}
 		TextureRegion[][] tmp = TextureRegion.split(sheet,
 				sheet.getWidth() / FRAME_COLS,
@@ -92,9 +116,10 @@ public class MyAnimation extends Animation<TextureRegion> {
 			animation = new MyAnimation(0.025f, frames, 2, false);
 			animation.setPosition(555, 0, 235, 80);
 		} else if (type == back) {
-			animation = new MyAnimation(0.025f, frames, 2, false);
+			animation = new MyAnimation(0.025f, frames, 3, false);
 			animation.setPosition(310, 0, 235, 80);
 		}
+
 		return animation;
 	}
 }
