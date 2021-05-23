@@ -29,6 +29,8 @@ public class TrainAiScreen implements Screen {
     static int back = 3;
     static MyActor startActor;
     static MyActor backActor;
+    static CheckBox checkBoxAll, checkBoxOne;
+    static TextField generationSize, numberOfGenerations;
 
     public TrainAiScreen(final MyGdxGame game) {
         this.game = game;
@@ -46,8 +48,8 @@ public class TrainAiScreen implements Screen {
         checkLabel.setAlignment(Align.center);
         table.add(checkLabel).colspan(2).expandX().fillX();
 
-        CheckBox checkBoxAll = new CheckBox("All at once", skin);
-        CheckBox checkBoxOne = new CheckBox("One by one", skin);
+        checkBoxAll = new CheckBox("All at once", skin);
+        checkBoxOne = new CheckBox("One by one", skin);
 
         table.row();
         ButtonGroup runBox = new ButtonGroup();
@@ -62,7 +64,7 @@ public class TrainAiScreen implements Screen {
         table.add(sizeLabel).colspan(2).expandX().fillX();
 
         table.row();
-        TextField generationSize = new TextField("15", skin);
+        generationSize = new TextField("15", skin);
         table.add(generationSize).colspan(2);
         String test = generationSize.getText(); // how to read the input
 
@@ -72,7 +74,7 @@ public class TrainAiScreen implements Screen {
         table.add(generationLabel).colspan(2).expandX().fillX();
 
         table.row();
-        TextField numberOfGenerations = new TextField("20", skin);
+        numberOfGenerations = new TextField("20", skin);
         table.add(numberOfGenerations).colspan(2);
 
         stage.addActor(table);
@@ -105,6 +107,14 @@ public class TrainAiScreen implements Screen {
     public void render(float delta) {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         ScreenUtils.clear(0, 0, 0.2f, 1);
+
+        // get input
+        if (checkBoxAll.isChecked()) {
+            animations[start].getInput("all", Integer.parseInt(generationSize.getText()), Integer.parseInt(numberOfGenerations.getText()));
+        } else {
+            animations[start].getInput("One", Integer.parseInt(generationSize.getText()), Integer.parseInt(numberOfGenerations.getText()));
+        }
+
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
     }

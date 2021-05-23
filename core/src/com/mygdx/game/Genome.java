@@ -23,13 +23,8 @@ public class Genome implements Comparable<Genome>{
 		this.layerSize = new int[layers];
 
 		// initialize the game set.
-		leftPaddle = new Paddle(5);
-		rightPaddle = new Paddle(screenWidth-5-20);
-		ball = new Ball();
-		score1 = 0;
-		score2 = 0;
+		reset();
 
-		isPlaying = true;
 		// Generate neurons
 		neurons = new double[layers][];
 		for (int i = 0; i < layers; i++) {
@@ -57,6 +52,17 @@ public class Genome implements Comparable<Genome>{
 				}
 			}
 		}
+	}
+
+	public void reset() {
+		isPlaying = true;
+		fitness = 0;
+
+		leftPaddle = new Paddle(5);
+		rightPaddle = new Paddle(screenWidth-5-20);
+		ball = new Ball();
+		score1 = 0;
+		score2 = 0;
 	}
 
 	public void initSynapsesRandomly() {

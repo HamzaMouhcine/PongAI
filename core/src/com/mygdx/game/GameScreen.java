@@ -48,6 +48,21 @@ public class GameScreen implements Screen {
         gen = new Generation(15, layerConfig, 0.2f);
     }
 
+    public GameScreen (final MyGdxGame game, int generationSize, int numberOfGenerations) {
+        this.game = game;
+        repeat = numberOfGenerations;
+
+        camera = new OrthographicCamera();
+        camera.setToOrtho(false, 800, 480);
+
+        sp = new ShapeRenderer();
+        ding = Gdx.audio.newSound(Gdx.files.internal("ping.mp3"));
+
+        // AI stuff
+        layerConfig = new int[]{2, 3, 3, 1};
+        gen = new Generation(generationSize, layerConfig, 0.2f);
+    }
+
     @Override
     public void render (float delta) {
         ScreenUtils.clear(0, 0, 0, 1);
@@ -132,7 +147,8 @@ public class GameScreen implements Screen {
         game.font.draw(game.batch, ""+genome.score1, screenWidth/2-50, screenHeight-20);
         game.font.draw(game.batch, ":", screenWidth/2, screenHeight-20);
         game.font.draw(game.batch, ""+genome.score2, screenWidth/2+50, screenHeight-20);
-        game.font.draw(game.batch, "current Generation: "+gen.generationNumber+", currentGenome: "+gen.currentGenome+", remaining: "+gen.remaining+", fitness: "+genome.ball.defense2, 20, screenHeight - 50);
+        game.font.draw(game.batch, "current Generation: "+gen.generationNumber+", remaining: "+gen.remaining, 20, screenHeight - 50);
+        //game.font.draw(game.batch, "current Generation: "+gen.generationNumber+", currentGenome: "+gen.currentGenome+", remaining: "+gen.remaining+", fitness: "+genome.ball.defense2, 20, screenHeight - 50);
         game.batch.end();
 
         sp.begin(ShapeRenderer.ShapeType.Filled);

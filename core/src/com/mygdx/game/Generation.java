@@ -67,9 +67,11 @@ public class Generation {
 		ArrayList<Genome> previousPopulation = previousGeneration.population;
 
 		// select the best 5 genomes from the previous generation.
-		ArrayList<Genome> newPopulation = selectN(5);
+		int N = (int) (size() * 0.2);
+		ArrayList<Genome> newPopulation = selectN(N);
 
 		// select two random genomes, cross over and mutate.
+		N = (int) (size() * 0.4);
 		for (int i = 1; i <= 5; i++) {
 			Genome a = previousPopulation.get((int)(Math.random() * generationSize));
 			Genome b = previousPopulation.get((int)(Math.random() * generationSize));
@@ -80,9 +82,18 @@ public class Generation {
 		}
 
 		// Mutation only.
-		for (int i = 1; i <= 5; i++) {
+		N = (int) (size() * 0.2);
+		for (int i = 1; i <= N; i++) {
 			Genome a = previousPopulation.get((int)(Math.random() * generationSize)).copie(layerSize);
 			a.mutate(mutationProbability);
+			newPopulation.add(a);
+		}
+
+		// generate the remaining genomes randomly.
+		int left = generationSize - newPopulation.size();
+		for (int i = 1; i <= left; i++) {
+			Genome a = new Genome(layerSize);
+			a.initSynapsesRandomly();
 			newPopulation.add(a);
 		}
 
@@ -95,7 +106,9 @@ public class Generation {
 		ArrayList<Genome> newPopulation = new ArrayList<>();
 
 		for (int i = 0; i < N; i++) {
-			newPopulation.add(population.get(i));
+			Genome tmp = population.get(i);
+			tmp.reset();
+			newPopulation.add(tmp);
 		}
 
 		return newPopulation;

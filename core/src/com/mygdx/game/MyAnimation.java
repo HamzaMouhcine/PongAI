@@ -14,6 +14,8 @@ public class MyAnimation extends Animation<TextureRegion> {
 	public int type;
 	public boolean loop;
 	public boolean activated;
+	public String checked;
+	public int generationSize, numberOfgenerations;
 	public int x;
 	public int y;
 	public int width;
@@ -41,6 +43,12 @@ public class MyAnimation extends Animation<TextureRegion> {
 		this.height = height;
 	}
 
+	public void getInput(String checked, int generationSize, int numberOfgenerations) {
+		this.checked = checked;
+		this.generationSize = generationSize;
+		this.numberOfgenerations = numberOfgenerations;
+	}
+
 	public TextureRegion getKeyFrame() {
 		return getKeyFrame(stateTime);
 	}
@@ -62,7 +70,12 @@ public class MyAnimation extends Animation<TextureRegion> {
 			game.setScreen(new MainMenuScreen(game));
 			screen.dispose();
 		} else if (name == "start") {
+			if (checked == "all") {
+				game.setScreen(new GameScreen(game, generationSize, numberOfgenerations));
+				screen.dispose();
+			} else {
 
+			}
 		}
 	}
 
