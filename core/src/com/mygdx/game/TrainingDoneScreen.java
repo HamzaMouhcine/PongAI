@@ -119,6 +119,7 @@ public class TrainingDoneScreen implements Screen {
         test.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+                selected.genome.reset();
                 GameScreen gameScreen = new GameScreen(game, selected.genome, false, true);
                 gameScreen.trainGenomes = population;
                 game.setScreen(gameScreen);

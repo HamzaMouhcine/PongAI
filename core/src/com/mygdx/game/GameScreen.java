@@ -91,7 +91,7 @@ public class GameScreen implements Screen {
         // if we came from selectedButton screen (we only play one time, best to reach 5).
         if (playOnce) {
             // return back to selectedGenome screen if a player reached 5 points:
-            if (genome.score1 == 5 || genome.score2 == 5) {
+            if (genome.score1 == 5 || genome.score2 == 5 || !genome.isPlaying) {
                 game.setScreen(new SelectGenomeScreen(game));
                 this.dispose();
             } else {
@@ -100,7 +100,7 @@ public class GameScreen implements Screen {
             return;
         } else if (test) {
             // return back to trainDoneScreen
-            if (genome.score1 == 3 || genome.score2 == 3) {
+            if (genome.score1 == 3 || genome.score2 == 3 || !genome.isPlaying) {
                 game.setScreen(new TrainingDoneScreen(game, trainGenomes));
                 this.dispose();
             } else {
@@ -241,7 +241,7 @@ public class GameScreen implements Screen {
         if (playOnce) limitScore = 5;
         if (test) limitScore = 3;
 
-        if (genome.score1 == limitScore) {
+        if (genome.score1 == limitScore || genome.fitness == 5) {
             // stop the game
             if (genome.isPlaying) gen.remaining--;
             genome.isPlaying = false;

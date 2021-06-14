@@ -77,12 +77,8 @@ public class MyAnimation extends Animation<TextureRegion> {
 	}
 
 	public void startPlayScreen (MyGdxGame game, Screen screen, Genome genome) {
+		genome.reset();
 		game.setScreen(new GameScreen(game, genome, true, false));
-		screen.dispose();
-	}
-
-	public void startTestScreen (MyGdxGame game, Screen screen, Genome genome) {
-		game.setScreen(new GameScreen(game, genome, false, true));
 		screen.dispose();
 	}
 
