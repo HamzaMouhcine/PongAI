@@ -14,6 +14,8 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.TimeUtils;
+
+import java.util.ArrayList;
 import java.util.Iterator;
 
 public class GameScreen implements Screen {
@@ -31,8 +33,11 @@ public class GameScreen implements Screen {
     Generation gen;
     int[] layerConfig;
     static int repeat = 50;
-    static boolean playWithBest = false;
-    static boolean autoPlay = true;
+    public boolean playWithBest = false, complete = false;
+    public boolean autoPlay = true;
+    public boolean allAtOnce;
+    public boolean playOnce = false, test = false;
+    public ArrayList<Genome> trainGenomes;
 
     public GameScreen (final MyGdxGame game) {
         this.game = game;
@@ -48,8 +53,18 @@ public class GameScreen implements Screen {
         gen = new Generation(15, layerConfig, 0.2f);
     }
 
-    public GameScreen (final MyGdxGame game, int generationSize, int numberOfGenerations) {
+    public GameScreen (final MyGdxGame game, Genome genome, boolean playOnce, boolean test) {
+        this(game);
+        this.playOnce = playOnce;
+        this.genome = genome;
+        this.test = test;
+        if (test) genome.reset();
+    }
+
+    public GameScreen (final MyGdxGame game, int generationSize, int numberOfGenerations, boolean allAtOnce) {
         this.game = game;
+        this.allAtOnce = allAtOnce;
+        this.playOnce = false;
         repeat = numberOfGenerations;
 
         camera = new OrthographicCamera();
@@ -73,18 +88,62 @@ public class GameScreen implements Screen {
             autoPlay = !autoPlay;
         }
 
-        nextGeneration();
+        // if we came from selectedButton screen (we only play one time, best to reach 5).
+        if (playOnce) {
+            // return back to selectedGenome screen if a player reached 5 points:
+            if (genome.score1 == 5 || genome.score2 == 5) {
+                game.setScreen(new SelectGenomeScreen(game));
+                this.dispose();
+            } else {
+                play();
+            }
+            return;
+        } else if (test) {
+            // return back to trainDoneScreen
+            if (genome.score1 == 3 || genome.score2 == 3) {
+                game.setScreen(new TrainingDoneScreen(game, trainGenomes));
+                this.dispose();
+            } else {
+                play();
+            }
+            return;
+        }
 
-        if (playWithBest) {
-            play();
-        } else {
+        if (complete) {
+            //play();
+            game.setScreen(new TrainingDoneScreen(game, gen.population));
+            this.dispose();
+        } else if (allAtOnce) { // run all the genomes of the current generation at once
+            nextGeneration();
             for (int i = 0; i < gen.size(); i++) {
                 genome = gen.get(i);
                 play();
             }
+        } else { // run the genomes of the current generation one by one.
+            nextGenome();
+            play();
         }
     }
 
+    // moves to the next genome if the evaluation of the current genome is complete.
+    public void nextGenome() {
+        if (genome == null) {
+            genome = gen.get(0);
+        }
+
+        if (genome.isPlaying) {
+            return;
+        }
+
+        if (gen.currentGenome == gen.size() - 1) {
+            nextGeneration();
+        } else {
+            gen.currentGenome++;
+            genome = gen.get(gen.currentGenome);
+        }
+    }
+
+    // creates a new generation if the evaluation of the current generation is complete.
     public void nextGeneration() {
         boolean on = false;
         for (int i = 0; i < gen.size(); i++) {
@@ -98,12 +157,15 @@ public class GameScreen implements Screen {
 
         if (gen.generationNumber != repeat) { // create a new generation.
             gen.newGeneration(gen);
+            genome = gen.get(0);
         } else { // play with the best genome from this generation.
             genome = gen.bestGenome();
             playWithBest = true;
+            complete = true;
         }
     }
 
+    // updates + renders the ball and paddles of the selected genome.
     public void play() {
         leftPaddle = genome.leftPaddle;
         rightPaddle = genome.rightPaddle;
@@ -135,8 +197,8 @@ public class GameScreen implements Screen {
         ball.update();
         int borderValue = ball.checkBorders();
         updateScore(borderValue);
-        ball.checkCollision(leftPaddle, ding);
-        ball.checkCollision(rightPaddle, ding);
+        ball.checkCollision(leftPaddle, ding, genome);
+        ball.checkCollision(rightPaddle, ding, genome);
 
         // update game (stop playing if condition verified)
         if (!checkScore()) return;
@@ -147,8 +209,13 @@ public class GameScreen implements Screen {
         game.font.draw(game.batch, ""+genome.score1, screenWidth/2-50, screenHeight-20);
         game.font.draw(game.batch, ":", screenWidth/2, screenHeight-20);
         game.font.draw(game.batch, ""+genome.score2, screenWidth/2+50, screenHeight-20);
-        game.font.draw(game.batch, "current Generation: "+gen.generationNumber+", remaining: "+gen.remaining, 20, screenHeight - 50);
-        //game.font.draw(game.batch, "current Generation: "+gen.generationNumber+", currentGenome: "+gen.currentGenome+", remaining: "+gen.remaining+", fitness: "+genome.ball.defense2, 20, screenHeight - 50);
+
+        if (playOnce || test) {}
+        else if (allAtOnce) {
+            game.font.draw(game.batch, "current Generation: " + gen.generationNumber + ", remaining: " + gen.remaining, 20, screenHeight - 50);
+        } else {
+            game.font.draw(game.batch, "current Generation: " + gen.generationNumber + ", currentGenome: " + gen.currentGenome + ", remaining: " + gen.remaining + ", fitness: " + genome.ball.defense2, 20, screenHeight - 50);
+        }
         game.batch.end();
 
         sp.begin(ShapeRenderer.ShapeType.Filled);
@@ -167,8 +234,14 @@ public class GameScreen implements Screen {
         }
     }
 
+    // returns true if the genome is still player,
+    // else it returns false and reduces the number of remaining genomes (only once)
     public boolean checkScore() {
-        if (genome.score1 == 2) {
+        int limitScore = 2;
+        if (playOnce) limitScore = 5;
+        if (test) limitScore = 3;
+
+        if (genome.score1 == limitScore) {
             // stop the game
             if (genome.isPlaying) gen.remaining--;
             genome.isPlaying = false;

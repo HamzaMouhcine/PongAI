@@ -70,7 +70,7 @@ public class Ball {
         }
     }
 
-    public void checkCollision(Paddle p, Sound ding) {
+    public void checkCollision(Paddle p, Sound ding, Genome genome) {
         float impactX = x;
         float impactY = y;
         if (this.xSpeed > 0) {  //  right paddle collision
@@ -83,6 +83,7 @@ public class Ball {
                 ySpeed =  300 * MathUtils.sinDeg(MathUtils.map(p.y, p.y+p.height, -angle, angle, y));
                 x = p.x - radius;
                 defense2++;
+                genome.fitness++;
             }
         } else {    // left paddle collision
             impactX -= radius;

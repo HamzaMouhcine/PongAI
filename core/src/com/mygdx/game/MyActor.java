@@ -11,6 +11,7 @@ public class MyActor extends Actor {
 	MyAnimation animation;
 	MyGdxGame game;
 	Screen screen;
+	public Genome genome;
 
 	public MyActor(MyAnimation a, String name, MyGdxGame game, Screen screen) {
 		this.animation = a;
@@ -39,7 +40,8 @@ public class MyActor extends Actor {
 	public void act(float delta) {
 		super.act(delta);
 		if (animation.isAnimationFinished()) {
-			animation.doneAnimation(game, screen, getName());
+			if (getName() == "select") animation.startPlayScreen(game, screen, genome);
+			else animation.doneAnimation(game, screen, getName());
 		}
 		if (animation.activated) {
 			animation.stateTime += delta;

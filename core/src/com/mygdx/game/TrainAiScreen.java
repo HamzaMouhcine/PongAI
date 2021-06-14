@@ -1,6 +1,7 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -30,7 +31,9 @@ public class TrainAiScreen implements Screen {
     static MyActor startActor;
     static MyActor backActor;
     static CheckBox checkBoxAll, checkBoxOne;
-    static TextField generationSize, numberOfGenerations;
+    static TextField generationSizeField, numberOfGenerationsField;
+    static int generationSize;
+    static int numberOfGenerations;
 
     public TrainAiScreen(final MyGdxGame game) {
         this.game = game;
@@ -64,9 +67,9 @@ public class TrainAiScreen implements Screen {
         table.add(sizeLabel).colspan(2).expandX().fillX();
 
         table.row();
-        generationSize = new TextField("15", skin);
-        table.add(generationSize).colspan(2);
-        String test = generationSize.getText(); // how to read the input
+        generationSizeField = new TextField("15", skin);
+        table.add(generationSizeField).colspan(2);
+        String test = generationSizeField.getText(); // how to read the input
 
         table.row().spaceTop(10);
         Label generationLabel = new Label("Number of generations", skin);
@@ -74,8 +77,8 @@ public class TrainAiScreen implements Screen {
         table.add(generationLabel).colspan(2).expandX().fillX();
 
         table.row();
-        numberOfGenerations = new TextField("20", skin);
-        table.add(numberOfGenerations).colspan(2);
+        numberOfGenerationsField = new TextField("20", skin);
+        table.add(numberOfGenerationsField).colspan(2);
 
         stage.addActor(table);
         table.setFillParent(true);
@@ -108,11 +111,19 @@ public class TrainAiScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         ScreenUtils.clear(0, 0, 0.2f, 1);
 
+        // for testing purpose
+        /*if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
+            game.setScreen(new TrainingDoneScreen(game));
+            this.dispose();
+        }*/
+
         // get input
+        generationSize = Integer.parseInt(generationSizeField.getText());
+        numberOfGenerations = Integer.parseInt(numberOfGenerationsField.getText());
         if (checkBoxAll.isChecked()) {
-            animations[start].getInput("all", Integer.parseInt(generationSize.getText()), Integer.parseInt(numberOfGenerations.getText()));
+            animations[start].getInput("all", generationSize, numberOfGenerations);
         } else {
-            animations[start].getInput("One", Integer.parseInt(generationSize.getText()), Integer.parseInt(numberOfGenerations.getText()));
+            animations[start].getInput("One", generationSize, numberOfGenerations);
         }
 
         stage.act(Gdx.graphics.getDeltaTime());

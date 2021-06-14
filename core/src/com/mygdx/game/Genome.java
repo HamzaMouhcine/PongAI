@@ -1,15 +1,19 @@
 package com.mygdx.game;
 
+import org.json.simple.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class Genome implements Comparable<Genome>{
-	private double[][] neurons; // [layer index][neuron index]
-	public double[][][] synapses;  //  [layer index][neuron index][synapse index]
-	private int[] layerSize;
+	public double[][] neurons; // [layer index][neuron index]
+	public double[][][] synapses;  //  [layer index][neuron index][synapse index(target in next layer)]
+	public int[] layerSize;
 	public int fitness;
+	public int layers;
 	private double minWeight = -1;
 	private double maxWeight = 1;
-	private int layers;
 	public boolean isPlaying;
 	public Ball ball;
 	public Paddle leftPaddle;
@@ -17,10 +21,12 @@ public class Genome implements Comparable<Genome>{
 	static int screenWidth = 800;
 	static int screenHeight = 480;
 	public int score1, score2;
+	public String name;
 
 	public Genome(int[] layerSize) {
 		layers = layerSize.length;
 		this.layerSize = new int[layers];
+		this.name = "generated automatically";
 
 		// initialize the game set.
 		reset();
@@ -52,6 +58,10 @@ public class Genome implements Comparable<Genome>{
 				}
 			}
 		}
+	}
+
+	public Genome(boolean fromJSON) {
+		this.reset();
 	}
 
 	public void reset() {
@@ -183,6 +193,47 @@ public class Genome implements Comparable<Genome>{
 				neurons[i][j] = sigmoid(neurons[i][j]);
 			}
 		}
+	}
+
+	public JSONObject toJSON() {
+		// convert neurons to a List
+		List<ArrayList<Double>> saveNeurons = new ArrayList<>();
+		for (int i = 0; i < neurons.length; i++) {
+			ArrayList<Double> newList = new ArrayList<>();
+			for (int j = 0; j < neurons[i].length; j++) {
+				newList.add(neurons[i][j]);
+			}
+			saveNeurons.add(newList);
+		}
+
+		// convert synapses to a List.
+		List<List<List<Double>>> saveSynapses = new ArrayList<>();
+		for (int i = 0; i < synapses.length; i++) {
+			List<List<Double>> firstLayer = new ArrayList<>();
+			for (int j = 0; j < synapses[i].length; j++) {
+				List<Double> secondLayer = new ArrayList<>();
+				for (int w = 0; w < synapses[i][j].length; w++) {
+					secondLayer.add(synapses[i][j][w]);
+				}
+				firstLayer.add(secondLayer);
+			}
+			saveSynapses.add(firstLayer);
+		}
+
+		// convert layerSize to a list;
+		List<Integer> saveLayerSize = new ArrayList<>();
+		for (int i = 0; i < layerSize.length; i++) {
+			saveLayerSize.add(layerSize[i]);
+		}
+
+		JSONObject genomeJSON = new JSONObject();
+		genomeJSON.put("neurons", saveNeurons);
+		genomeJSON.put("synapses", saveSynapses);
+		genomeJSON.put("layerSize", saveLayerSize);
+		genomeJSON.put("layers", this.layers);
+		genomeJSON.put("fitness", this.fitness);
+
+		return genomeJSON;
 	}
 
 	private double sigmoid(double x) {

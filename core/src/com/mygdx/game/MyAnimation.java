@@ -9,6 +9,8 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector3;
 
+import static com.mygdx.game.TrainAiScreen.numberOfGenerations;
+
 public class MyAnimation extends Animation<TextureRegion> {
 	public float stateTime;
 	public int type;
@@ -64,19 +66,24 @@ public class MyAnimation extends Animation<TextureRegion> {
 		} else if (name == "train") { // trainAi Button
 			game.setScreen(new TrainAiScreen(game));
 			screen.dispose();
-		} else if (name == "select") {
-
 		} else if (name == "back") {
 			game.setScreen(new MainMenuScreen(game));
 			screen.dispose();
 		} else if (name == "start") {
-			if (checked == "all") {
-				game.setScreen(new GameScreen(game, generationSize, numberOfgenerations));
-				screen.dispose();
-			} else {
-
-			}
+			boolean allAtOnce = checked.equals("all");
+			game.setScreen(new GameScreen(game, generationSize, numberOfgenerations, allAtOnce));
+			screen.dispose();
 		}
+	}
+
+	public void startPlayScreen (MyGdxGame game, Screen screen, Genome genome) {
+		game.setScreen(new GameScreen(game, genome, true, false));
+		screen.dispose();
+	}
+
+	public void startTestScreen (MyGdxGame game, Screen screen, Genome genome) {
+		game.setScreen(new GameScreen(game, genome, false, true));
+		screen.dispose();
 	}
 
 	public static MyAnimation initializeAnimation(int type, int FRAME_COLS, int FRAME_ROWS, FileHandle file, int x, int y, int width, int height) {
