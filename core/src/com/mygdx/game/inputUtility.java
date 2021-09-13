@@ -7,9 +7,10 @@ import org.json.simple.parser.JSONParser;
 import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
+import com.mygdx.game.ai.*;
 
-public class inputUtility {
-    static ArrayList<Genome> getGenomes() {
+public class InputUtility {
+    public static ArrayList<Genome> getGenomes() {
         ArrayList<Genome> inputGenomes = new ArrayList<>();
 
         JSONParser parser = new JSONParser();

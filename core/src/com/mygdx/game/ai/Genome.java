@@ -1,6 +1,7 @@
-package com.mygdx.game;
+package com.mygdx.game.ai;
 
 import org.json.simple.JSONObject;
+import com.mygdx.game.animation.*;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,21 +1,20 @@
-package com.mygdx.game;
+package com.mygdx.game.ai;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 import java.util.Random;
 
 public class Generation {
-	ArrayList<Genome> population;
+	public ArrayList<Genome> population;
 	int[] layerSize;
 	double mutationProbability;
 	double minWeight = -1;
 	double maxWeight = 1;
 	int layers;
 	int generationSize;
-	int generationNumber;
-	static int currentGenome;
-	static int remaining;
+	public int generationNumber;
+	public static int currentGenome;
+	public static int remaining;
 
 	public Generation(int generationSize, int[] layerSize, double mutationProbability) {
 	    this.generationSize = generationSize;
@@ -66,7 +65,7 @@ public class Generation {
 	public ArrayList<Genome> evolve(Generation previousGeneration) {
 		ArrayList<Genome> previousPopulation = previousGeneration.population;
 
-		// select the best 5 genomes from the previous generation.
+		// select the best N genomes from the previous generation.
 		int N = Math.min((int) (size() * 0.2), generationSize);
 		ArrayList<Genome> newPopulation = selectN(N);
 

@@ -1,28 +1,21 @@
-package com.mygdx.game;
+package com.mygdx.game.myscreens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
-import com.badlogic.gdx.utils.TimeUtils;
-
+import com.mygdx.game.*;
+import com.mygdx.game.animation.*;
+import com.mygdx.game.ai.*;
 import java.util.ArrayList;
-import java.util.Iterator;
 
 public class GameScreen implements Screen {
     final MyGdxGame game;
     OrthographicCamera camera;
     ShapeRenderer sp;
-    Rectangle paddle;
     Paddle leftPaddle;
     Paddle rightPaddle;
     int screenWidth = 800;
@@ -61,6 +54,7 @@ public class GameScreen implements Screen {
         if (test) genome.reset();
     }
 
+    // to create a game to train genomes (created after clicking on start on the TrainingAiScreen)
     public GameScreen (final MyGdxGame game, int generationSize, int numberOfGenerations, boolean allAtOnce) {
         this.game = game;
         this.allAtOnce = allAtOnce;
@@ -234,7 +228,7 @@ public class GameScreen implements Screen {
         }
     }
 
-    // returns true if the genome is still player,
+    // returns true if the genome is still playing,
     // else it returns false and reduces the number of remaining genomes (only once)
     public boolean checkScore() {
         int limitScore = 2;

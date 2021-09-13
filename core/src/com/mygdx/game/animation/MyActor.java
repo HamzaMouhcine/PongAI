@@ -1,4 +1,4 @@
-package com.mygdx.game;
+package com.mygdx.game.animation;
 
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
@@ -6,6 +6,8 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.mygdx.game.*;
+import com.mygdx.game.ai.*;
 
 public class MyActor extends Actor {
 	MyAnimation animation;

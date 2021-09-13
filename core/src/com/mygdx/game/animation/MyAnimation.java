@@ -1,15 +1,14 @@
-package com.mygdx.game;
+package com.mygdx.game.animation;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Vector3;
-
-import static com.mygdx.game.TrainAiScreen.numberOfGenerations;
+import com.mygdx.game.ai.*;
+import com.mygdx.game.MyGdxGame;
+import com.mygdx.game.myscreens.*;
 
 public class MyAnimation extends Animation<TextureRegion> {
 	public float stateTime;

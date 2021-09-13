@@ -1,4 +1,4 @@
-package com.mygdx.game;
+package com.mygdx.game.myscreens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -21,6 +21,8 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 import java.util.Iterator;
+import com.mygdx.game.*;
+import com.mygdx.game.animation.*;
 
 public class TrainAiScreen implements Screen {
     final MyGdxGame game;
@@ -33,7 +35,7 @@ public class TrainAiScreen implements Screen {
     static CheckBox checkBoxAll, checkBoxOne;
     static TextField generationSizeField, numberOfGenerationsField;
     static int generationSize;
-    static int numberOfGenerations;
+    public static int numberOfGenerations;
 
     public TrainAiScreen(final MyGdxGame game) {
         this.game = game;

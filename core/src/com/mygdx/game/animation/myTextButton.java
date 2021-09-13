@@ -1,4 +1,4 @@
-package com.mygdx.game;
+package com.mygdx.game.animation;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import com.mygdx.game.ai.*;
 
 public class myTextButton extends TextButton {
     public Genome genome;

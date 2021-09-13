@@ -1,18 +1,18 @@
-package com.mygdx.game;
+package com.mygdx.game.animation;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 
 public class Paddle {
-    float x;
-    float y;
-    float width = 20;
-    float height = 100;
+    public float x;
+    public float y;
+    public float width = 20;
+    public float height = 100;
     float screenWidth = 800;
     float screenHeight = 480;
 
-    Paddle(float x) {
+    public Paddle(float x) {
         this.x = x;
         this.y = (screenHeight / 2) - (height / 2);
     }
@@ -21,7 +21,7 @@ public class Paddle {
         this.y = (screenHeight / 2) - (height / 2);
     }
 
-    void updateLeft() {
+    public void updateLeft() {
         if (Gdx.input.isKeyPressed(Input.Keys.W)) this.y -= 300 * Gdx.graphics.getDeltaTime();
         if (Gdx.input.isKeyPressed(Input.Keys.A)) this.y += 300 * Gdx.graphics.getDeltaTime();
     }
@@ -31,12 +31,12 @@ public class Paddle {
         if (Gdx.input.isKeyPressed(Input.Keys.UP)) this.y += 300 * Gdx.graphics.getDeltaTime();
     }
 
-    void aiUpdateLeft(double paddlePosition, double ballPosition) {
+    public void aiUpdateLeft(double paddlePosition, double ballPosition) {
         if (paddlePosition < ballPosition) this.y += 300 * Gdx.graphics.getDeltaTime();
         else if (paddlePosition > ballPosition) this.y -= 300 * Gdx.graphics.getDeltaTime();
     }
 
-    void aiUpdateRight(int action) {
+    public void aiUpdateRight(int action) {
         if (action == 1) {          // move the paddle up.
             this.y += 300 * Gdx.graphics.getDeltaTime();
         } else if (action == -1) {  // move the paddle down.
@@ -44,7 +44,7 @@ public class Paddle {
         }
     }
 
-    void checkBorders() {
+    public void checkBorders() {
         if (y < 0) {
             y = 0;
         }

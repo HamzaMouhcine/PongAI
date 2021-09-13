@@ -1,20 +1,22 @@
-package com.mygdx.game;
+package com.mygdx.game.animation;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.math.MathUtils;
+import com.mygdx.game.ai.*;
 
 public class Ball {
-    float x;
-    float y;
-    float radius;
+    public float x;
+    public float y;
+    public float radius;
     float xSpeed;
     float ySpeed;
     float screenWidth = 800;
     float screenHeight = 480;
-    int defense1, defense2;
+    int defense1;
+    public int defense2;
 
-    Ball() {
+    public Ball() {
         radius = 7;
         initialize(true);
     }
