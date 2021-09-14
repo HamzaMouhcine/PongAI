@@ -1,5 +1,6 @@
 package com.mygdx.game.animation;
 
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import org.json.simple.JSONArray;
@@ -13,6 +14,7 @@ import com.mygdx.game.ai.*;
 
 public class myTextButton extends TextButton {
     public Genome genome;
+    public Actor genomeActor;
 
     public myTextButton(String text, Skin skin) {
         super(text, skin);

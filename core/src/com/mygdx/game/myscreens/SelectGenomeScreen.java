@@ -14,8 +14,10 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.game.*;
 import com.mygdx.game.animation.*;
 import com.mygdx.game.ai.*;
-
+import com.mygdx.game.InputUtility.*;
 import java.util.ArrayList;
+
+
 
 public class SelectGenomeScreen implements Screen {
     final MyGdxGame game;
@@ -57,6 +59,18 @@ public class SelectGenomeScreen implements Screen {
             }
         };
 
+        ChangeListener deleteListener = new ChangeListener() {
+            public void changed (ChangeEvent event, Actor actor) {
+                // get selected genome to update genome description component
+                if (((myTextButton)actor).isChecked()) {
+                    System.out.println("genome deleted: " + ((myTextButton) actor).genome.name);
+                    InputUtility.deleteGenome(((myTextButton) actor).genome.name);
+                    ((myTextButton) actor).genomeActor.remove();
+                    actor.remove();
+                }
+            }
+        };
+
 
         table = new Table();
         descriptionButton = new TextButton("Great genome", descriptionStyle);
@@ -64,29 +78,33 @@ public class SelectGenomeScreen implements Screen {
         // Last generation genomes panel:
         Table genomesPanel = new Table();
         TextureRegion upRegion = new TextureRegion(new Texture(Gdx.files.internal("genome_result.png")));
+        TextureRegion upRegion2 = new TextureRegion(new Texture(Gdx.files.internal("delete_button.png")));
         TextureRegion checkedRegion = new TextureRegion(new Texture(Gdx.files.internal("genome_result_selected.png")));
         TextureRegionDrawable up = new TextureRegionDrawable(upRegion);
-        TextureRegionDrawable up2 = new TextureRegionDrawable(upRegion);
+        TextureRegionDrawable up2 = new TextureRegionDrawable(upRegion2);
         up.setMinSize(200, 100);
-        up2.setMinSize(100, 100);
+        up2.setMinSize(100, 90);
         TextureRegionDrawable checked = new TextureRegionDrawable(checkedRegion);
         TextureRegionDrawable checked2 = new TextureRegionDrawable(checkedRegion);
         checked.setMinSize(200, 100);
-        checked2.setMinSize(100, 100);
         TextButton.TextButtonStyle style = new TextButton.TextButtonStyle(up, null, checked, buttonFont);
-        TextButton.TextButtonStyle style2 = new TextButton.TextButtonStyle(up2, null, checked2, buttonFont);
+        TextButton.TextButtonStyle style2 = new TextButton.TextButtonStyle(up2, null, null, buttonFont);
 
         // filling the panel with the given generation of genomes.
         ButtonGroup genomesGroup = new ButtonGroup();
+
         ArrayList<Genome> savedGenomes = InputUtility.getGenomes();
         for (int i = 0; i < savedGenomes.size(); i++) {
             Genome genome = savedGenomes.get(i);
             myTextButton genomeButton = new myTextButton(genome.name, style);
-            myTextButton deleteButton = new myTextButton("delete", style2);
+            myTextButton deleteButton = new myTextButton("", style2);
             genomeButton.setSize(200, 100);
 
             genomeButton.genome = genome;
+            deleteButton.genome = genome;
+            deleteButton.genomeActor = genomeButton;
             genomeButton.addListener(listener);
+            deleteButton.addListener(deleteListener);
             genomesGroup.add(genomeButton);
 
             genomesPanel.add(genomeButton);

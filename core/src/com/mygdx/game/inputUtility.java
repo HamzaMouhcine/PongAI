@@ -6,6 +6,8 @@ import org.json.simple.parser.JSONParser;
 
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import com.mygdx.game.ai.*;
 
@@ -38,6 +40,49 @@ public class InputUtility {
         }
 
         return inputGenomes;
+    }
+
+    public static boolean deleteGenome(String genomeName) {
+        JSONParser parser = new JSONParser();
+        JSONArray genomes = new JSONArray();
+
+        // open the file as an array of genomes:
+        try {
+            genomes = (JSONArray) parser.parse(new FileReader("savedGenomes/genomes.json"));
+        } catch (Exception e) {
+            try {
+                File file = new File("savedGenomes/genomes.json");
+                file.createNewFile();
+            } catch (Exception e2) {
+                System.out.println("file error: "+e2);
+            }
+            System.out.println("ignore this: "+e);
+        }
+
+        // remove the genome from the array:
+        JSONArray updatedGenomes = new JSONArray();
+        boolean removed = false;
+        for (int i = 0; i < genomes.size(); i++) {
+            if (((JSONObject)genomes.get(i)).get("name").equals(genomeName) && !removed) {
+                removed = true;
+                continue;
+            }
+            updatedGenomes.add(genomes.get(i));
+        }
+
+        if (!removed) return false;
+
+        // save the array back in genomes.json
+        try {
+            FileWriter myWriter = new FileWriter("savedGenomes/genomes.json");
+            myWriter.write(updatedGenomes.toString());
+            myWriter.close();
+            System.out.println("Successfully deleted genome from the file.");
+        } catch (IOException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
+        return true;
     }
 
     static Genome JsonToGenome(JSONObject genomeJSON) {
