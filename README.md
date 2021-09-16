@@ -1,6 +1,7 @@
 # PongAI
 
 ## Description
+
 I created an AI that learns to play Pong, with the help of neural networks and a genetic algorithm.
 
 
@@ -13,8 +14,8 @@ The neural network controls the right paddle. You can control the left paddle or
 ### Controls
 
 Spacebar: enables/disables auto play for the left paddle.
+
 a/w : If auto play is disabled, use these buttons to control the left paddle.
-synapses.txt
 
 ## Source Code
 
@@ -48,7 +49,6 @@ The Neural Network will start with completely random synapses. This will inevita
 * 40% => mixing genomes from the last generation(cross-over).
 * 20% => mutation of genomes from the last generation.
 * 20% => new random genomes.
-If one genome scored a point
 
 ### Inputs and Outputs
 
