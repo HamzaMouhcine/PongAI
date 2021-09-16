@@ -4,6 +4,7 @@
 
 I created an AI that learns to play Pong, with the help of neural networks and a genetic algorithm.
 
+![PongAI testing generation](https://raw.githubusercontent.com/HamzaMouhcine/PongAI/master/assets/training-screen.png)
 
 ## Play the game
 
