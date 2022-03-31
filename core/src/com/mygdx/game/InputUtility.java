@@ -20,10 +20,10 @@ public class InputUtility {
 
         // open the file
         try {
-            genomes = (JSONArray) parser.parse(new FileReader("savedGenomes/genomes.json"));
+            genomes = (JSONArray) parser.parse(new FileReader("genomes.json"));
         } catch (Exception e) {
             try {
-                File file = new File("savedGenomes/genomes.json");
+                File file = new File("genomes.json");
                 file.createNewFile();
             } catch (Exception e2) {
                 System.out.println(e2);
@@ -48,10 +48,10 @@ public class InputUtility {
 
         // open the file as an array of genomes:
         try {
-            genomes = (JSONArray) parser.parse(new FileReader("savedGenomes/genomes.json"));
+            genomes = (JSONArray) parser.parse(new FileReader("genomes.json"));
         } catch (Exception e) {
             try {
-                File file = new File("savedGenomes/genomes.json");
+                File file = new File("genomes.json");
                 file.createNewFile();
             } catch (Exception e2) {
                 System.out.println("file error: "+e2);
@@ -74,7 +74,7 @@ public class InputUtility {
 
         // save the array back in genomes.json
         try {
-            FileWriter myWriter = new FileWriter("savedGenomes/genomes.json");
+            FileWriter myWriter = new FileWriter("genomes.json");
             myWriter.write(updatedGenomes.toString());
             myWriter.close();
             System.out.println("Successfully deleted genome from the file.");

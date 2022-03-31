@@ -41,7 +41,7 @@ public class MainMenuScreen implements Screen {
         Gdx.input.setInputProcessor(stage);
 
         // PongAI logo
-        pongAi = new Texture(Gdx.files.internal("PongAI.png"));
+        pongAi = new Texture(Gdx.files.internal("pongAI.png"));
         pongAiSprite = new Sprite(pongAi);
         pongAiSprite.setPosition(screenWidth / 2 - 400 / 2, screenHeight - 140 - 10);
 

@@ -72,7 +72,7 @@ You can customize the size of the generation, and the number of generations. you
 ![PongAI Settings](https://raw.githubusercontent.com/HamzaMouhcine/PongAI/master/assets/settings_screen.png)
 
 After all the generations are tested, you can save/test any genome of the last generation.
-Genoms are saved in a json file: assets/savedGenomes/genomes.json
+Genoms are saved in a json file: genomes.json
 
 ![PongAI Result](https://raw.githubusercontent.com/HamzaMouhcine/PongAI/master/assets/result_screen.png)
 
